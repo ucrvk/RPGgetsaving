@@ -72,12 +72,12 @@ class MyFrame(wx.Frame):
     def onLoadButtonClicked(self, event):
         DOCUMENTS_DIR=self.savingdirText.GetValue()
         GAME_DIR=self.gamedirText.GetValue()
-        if len(self.accountText.GetValue()) < 12:
+        if len(self.passwdText.GetValue()) < 12:
             token = logIn(self.accountText.GetValue(), self.passwdText.GetValue())
+            self.passwdText.SetValue(token)
             if type(token) == int:
                 wx.MessageBox(loginErrorCompose(token), "发生错误", wx.OK | wx.ICON_ERROR)
-        else:
-            token = self.passwdText.GetValue()
+        token = self.passwdText.GetValue()
         if type(token) == str:
             activity = getActivity(token)
             if not activity:
