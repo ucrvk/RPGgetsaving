@@ -87,7 +87,7 @@ def get_resource_path(relative_path):
 
 def logIn(username: str, password: str):
     json = {"username": username, "password": password}
-    ans = post('http://manage.rpgvtc.cn/api/app/login',
+    ans = post('https://rpg.heimaoo.com/api/app/login',
                json=json, headers=header)
     if not ans.status_code == 200:
         return -1
@@ -100,7 +100,7 @@ def logIn(username: str, password: str):
 def getActivity(token):
     tempHeader = header
     tempHeader.update(token=token)
-    ans = get('http://manage.rpgvtc.cn/api/app/activity/currentDay',
+    ans = get('http://rpg.heimaoo.com/api/app/activity/currentDay',
               headers=tempHeader)
     if not ans.status_code == 200:
         return -1
