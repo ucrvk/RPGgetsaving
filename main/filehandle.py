@@ -3,6 +3,8 @@ from shutil import rmtree
 from pathlib import Path
 from zipfile import ZipFile
 from typing import List
+import winshell
+import sys
 
 def get_shortcut_target(shortcut_path):
     try:
@@ -46,4 +48,52 @@ def detctDefaultDir() -> List[str]:
         GAME_DIR = ""
     return [DOCUMENTS_DIR, GAME_DIR]
 
-dafaultDirectory=detctDefaultDir()
+
+dafaultDirectory = detctDefaultDir()
+
+
+def deleteDirectory(directory):
+    if os.path.exists(directory):
+        os.rmdir(directory)
+
+
+def get_resource_path(relative_path):
+    if hasattr(sys, "_MEIPASS"):
+        return os.path.join(sys._MEIPASS, relative_path)
+    return os.path.join(os.path.abspath("."), relative_path)
+
+
+def delDisabled(dir):
+    for root, dirs, files in os.walk(dir):
+        for file in files:
+            if file.endswith(".disabled"):
+                file_path = os.path.join(root, file)
+                new_file_path = os.path.join(root, file[:-8])  # 删除文件名中的.disabled后缀
+
+                # 检查新文件名是否已经存在
+                if os.path.exists(new_file_path):
+                    os.remove(file_path)  # 如果新文件名已经存在，则直接删除.disabled文件
+                else:
+                    # 如果新文件名不存在，则删除.disabled后缀
+                    os.rename(file_path, new_file_path)
+
+
+def get_recently_modified_folder(directory):
+    folders = [
+        f for f in os.listdir(directory) if os.path.isdir(os.path.join(directory, f))
+    ]
+    if not folders:
+        return None
+
+    recently_modified_folder = None
+    recent_modified_time = float("-inf")
+
+    for folder_name in folders:
+        folder_path = os.path.join(directory, folder_name)
+        modified_time = os.path.getmtime(folder_path)
+
+        if modified_time > recent_modified_time:
+            recent_modified_time = modified_time
+            recently_modified_folder = folder_path
+
+    return recently_modified_folder

@@ -17,7 +17,7 @@ def settingLoad() -> Union[dict, Exception]:
     """
     try:
         with open("settings.json", "r") as f:
-            return load(f.read())
+            return load(f)
     except FileNotFoundError:
         with open("settings.json", "w") as f:
             dump(defaultJson, f, indent=4)
@@ -45,3 +45,4 @@ def emptyDirectoryDectec(dectetJson:dict)->bool:
         return True
     else:
         return False
+
