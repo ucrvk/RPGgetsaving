@@ -1,20 +1,12 @@
 import wx
-from httpx import get, post
-import os
+
 import winshell
-from zipfile import ZipFile
-from pathlib import Path
+
+
 from wget import download
-from shutil import rmtree
+
 import sys
-import json
-import webbrowser
-header = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64;'
-                  ' x64) AppleWebKit/537.36 (KHTML, like'
-                  ' Gecko) Chrome/89.0.4389.90 Safari/537.36',
-    'app-version-code': '65535',
-}
+
 
 
 def get_recently_modified_folder(directory):
@@ -52,20 +44,6 @@ def delDisabled(dir):
                     os.rename(file_path, new_file_path)
 
 
-def get_shortcut_target(shortcut_path):
-    try:
-        # 使用winshell模块打开快捷方式
-        shortcut = winshell.shortcut(shortcut_path)
-        # 获取目标路径
-        target_path = shortcut.path
-        # 检查目标路径是否存在
-        if os.path.exists(target_path):
-            return target_path
-        else:
-            return None
-    except Exception as e:
-        print("Error accessing shortcut:", e)
-        return None
 
 
 DOCUMENTS_DIR = str(Path(os.path.expanduser(
